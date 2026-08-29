@@ -272,11 +272,21 @@ export function initCursor() {
   if (!dot) return
 
   // A cursor that lags behind the pointer is exactly the kind of motion the
-  // reduced-motion setting is about — fall back to the system cursor.
+  // reduced-motion setting is about — leave the system cursor alone.
   if (prefersReducedMotion() || window.matchMedia('(pointer: coarse)').matches) {
-    document.documentElement.classList.add('native-cursor')
     return
   }
+
+  // Centre the dot and ring on the pointer. This has to be xPercent/yPercent
+  // rather than a CSS translate or a negative margin: GSAP rewrites `transform`
+  // every frame (so a CSS translate is clobbered), and percentage margins
+  // resolve against the containing block's *width* on every side — margin-top
+  // of -50% became -50% of the viewport width and pushed the cursor off-screen.
+  gsap.set([dot, ring].filter(Boolean), { xPercent: -50, yPercent: -50 })
+
+  // Only now hide the native cursor: if this function had bailed or thrown, the
+  // real pointer would still be there.
+  document.documentElement.classList.add('custom-cursor')
 
   let mx = 0
   let my = 0

@@ -41,24 +41,25 @@
 
 html {
   font-family: var(--font-body);
-  cursor: none;
   scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-html.native-cursor,
-html.native-cursor body,
-html.native-cursor a,
-html.native-cursor button { cursor: auto; }
-html.native-cursor .cursor-dot,
-html.native-cursor .cursor-ring { display: none; }
+/* The native cursor is hidden only once initCursor() confirms it is drawing a
+   replacement. If the script fails, is blocked, or bails out (touch device,
+   reduced motion), the real cursor is simply left alone. */
+html.custom-cursor,
+html.custom-cursor body,
+html.custom-cursor * { cursor: none; }
+
+html:not(.custom-cursor) .cursor-dot,
+html:not(.custom-cursor) .cursor-ring { display: none; }
 
 body {
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  cursor: none;
   font-feature-settings: 'kern' 1, 'liga' 1;
 }
 
@@ -126,7 +127,6 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
 .cursor-ring {
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 99999;
-  margin-left: -50%; margin-top: -50%;
   border-radius: 50%;
   will-change: transform;
 }
@@ -331,8 +331,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   font-size: 12px; padding: 8px 20px;
   border: 1px solid rgba(247,231,206,1);
   border-radius: 20px; color: var(--text);
-  text-decoration: none; display: inline-block;
-  cursor: none; transition: all 0.3s;
+  text-decoration: none; display: inline-block; transition: all 0.3s;
 }
 .nav-cta:hover {
   background: rgba(255, 255, 255, 0.06);
@@ -455,7 +454,6 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   text-transform: uppercase;
   box-shadow: 0 10px 30px -12px var(--accent-glow);
   transition: box-shadow 0.4s var(--ease-out);
-  cursor: none;
 }
 /* Light sweep across the face on hover. */
 .cta-primary::after {
@@ -479,7 +477,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   border: 1px solid rgba(247,231,206,0.2);
   border-radius: 6px; text-decoration: none;
   letter-spacing: 1px; text-transform: uppercase;
-  transition: all 0.3s; cursor: none;
+  transition: all 0.3s;
 }
 .cta-ghost {
   border-radius: 8px;
@@ -726,12 +724,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   .ft2 { right: -10px; }
   .ft3 { left: -10px; }
   .scroll-indicator { display: none; }
-  /* Restore default cursor on mobile */
-  html, body { cursor: auto; }
   .cursor-dot, .cursor-ring { display: none; }
-  a, button, select, input, textarea, .js-chat-toggle, .badge-parallax-wrap, .btn, .nav-logo {
-    cursor: auto !important;
-  }
 }
 
 /* ═══ ABOUT SECTION ═══ */
@@ -941,7 +934,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
 
 .contact-email { display: inline-block; font-size: 18px; color: var(--text);
   text-decoration: none; position: relative; margin-bottom: 32px;
-  padding-bottom: 4px; cursor: none; }
+  padding-bottom: 4px; }
 .contact-email::after { content: ''; position: absolute; left: 0; bottom: 0;
   width: 100%; height: 1px; background: var(--accent);
   transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
@@ -949,7 +942,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
 
 .contact-socials { display: flex; gap: 24px; justify-content: center; margin-bottom: 48px; }
 .social-link { display: flex; align-items: center; gap: 6px; font-size: 13px;
-  color: rgba(247,231,206,0.5); text-decoration: none; transition: color 0.3s; cursor: none; }
+  color: rgba(247,231,206,0.5); text-decoration: none; transition: color 0.3s; }
 .social-link:hover { color: var(--accent); }
 
 .footer-marquee { overflow: hidden; white-space: nowrap; margin-top: 80px;
@@ -970,7 +963,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
 .chat-toggle {
   width: 56px; height: 56px; border-radius: 50%;
   background: var(--accent); color: var(--bg);
-  border: none; cursor: none; font-size: 22px;
+  border: none; font-size: 22px;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 24px rgba(255,96,68,0.3);
   transition: transform 0.2s;
@@ -1026,7 +1019,7 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   padding: 10px 12px; color: var(--text); font-size: 12.5px; outline: none; }
 .chat-input-row input:focus { border-color: var(--accent); }
 .chat-input-row button { width: 38px; height: 38px; border-radius: 10px;
-  background: var(--accent); color: var(--bg); border: none; cursor: none;
+  background: var(--accent); color: var(--bg); border: none;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 .chat-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 12px 0; }
@@ -1039,7 +1032,6 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 0.4px;
-  cursor: none;
   transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 .chat-chip:hover {
@@ -1336,7 +1328,6 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
-  cursor: none;
   transition: border-color 0.3s ease, color 0.3s ease,
               background-color 0.3s ease, transform 0.3s var(--ease-out);
 }
@@ -1429,7 +1420,6 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  html, body { cursor: auto; }
   .cursor-dot, .cursor-ring { display: none; }
   .float-tag, .hero-tag, .hero-sub, .hero-cta-row,
   .hero-stats, .code-float, .spark-icon, .nav-bar, .bg-initials {
