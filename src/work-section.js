@@ -159,15 +159,23 @@ export class WorkSection {
    * Set canvas style
    */
   setCtxStyle() {
-    // --color-secondary, not --color-primary: primary IS this section's
-    // background, so the grid was being drawn invisibly on top of itself.
-    const color = getComputedStyle(this.el)
-      .getPropertyValue('--color-secondary')
-      .trim()
+    // --color-primary is this section's own background, so the grid used to be
+    // drawn invisibly on top of itself. Colour, opacity and dot size are all
+    // exposed as custom properties on .s-work so the grid can be tuned in CSS.
+    const styles = getComputedStyle(this.el)
+    const read = (name, fallback) => {
+      const value = styles.getPropertyValue(name).trim()
+      return value || fallback
+    }
+
+    const color = read('--grid-color', read('--color-secondary', '#B8A994'))
+    const alpha = parseFloat(read('--grid-alpha', '1'))
+    this.gridDotSize = parseFloat(read('--grid-dot-size', '1.1'))
 
     Ticker.nextTick(() => {
-      this.ctx.strokeStyle = color || '#B8A994'
-      this.ctx.globalAlpha = 0.5
+      this.ctx.strokeStyle = color
+      this.ctx.fillStyle = color
+      this.ctx.globalAlpha = Number.isFinite(alpha) ? alpha : 1
     })
   }
 
@@ -725,16 +733,18 @@ export class WorkSection {
 
     ctx.clearRect(0, 0, bounding.width, bounding.height)
 
+    const size = this.gridDotSize || 1.1
+
     ctx.beginPath()
 
     points.forEach((point) => {
       const x = point.x + point.dx * (1 - pointsProgress) * 0.2 + point.flowX
       const y = point.y + point.dy * (1 - pointsProgress) * 0.2
 
-      ctx.rect(x, y, 0.5, 0.5)
+      ctx.rect(x, y, size, size)
     })
 
-    ctx.stroke()
+    ctx.fill()
 
     last.pointsProgress = rPointsProgress
     last.animationProgress = rAnimationProgress

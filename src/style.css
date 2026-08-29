@@ -261,10 +261,20 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
 .bg-initials {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-stamp); font-size: 45vw; font-weight: 700;
-  color: rgba(255,255,255,0.04); pointer-events: none;
-  user-select: none; letter-spacing: -2vw; line-height: 1;
+  /* Syne, not --font-stamp: Bigger Display is condensed and very heavy, so at
+     this size its counters close up and "PB" reads as two slabs. */
+  font-family: var(--font-display);
+  /* 28vw puts the ink at ~62% of the viewport width: big enough to read as a
+     watermark, small enough that "PB" still reads as letterforms rather than
+     abstract shapes. */
+  font-size: 28vw; font-weight: 800;
+  color: rgba(247, 231, 206, 0.055); pointer-events: none;
+  user-select: none; letter-spacing: -0.06em; line-height: 0.78;
   z-index: 0;
+  /* Fade the base of the letters so they sit under the character rather than
+     ending in a hard horizontal cut. */
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 92%);
+  mask-image: linear-gradient(180deg, #000 55%, transparent 92%);
   opacity: 0;
   filter: blur(18px);
   transition: opacity 1.8s var(--ease-out), filter 1.8s var(--ease-out);
@@ -702,7 +712,9 @@ html { scrollbar-color: rgba(247, 231, 206, 0.18) transparent; scrollbar-width: 
   .hero-right { order: 3; }
   .hero-cta-row { justify-content: center; }
   .hero-stats { justify-content: center; }
-  .bg-initials { font-size: 60vw; }
+  /* Syne's ink runs ~2.2x the font-size, so 60vw would overflow the viewport
+     on a phone. 38vw lands the letters at ~84% width. */
+  .bg-initials { font-size: 38vw; }
 }
 
 @media (max-width: 768px) {

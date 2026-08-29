@@ -1,6 +1,11 @@
 .s-work {
   --color-primary: #121313;
   --color-secondary: #B8A994;
+
+  /* Drifting point grid on the canvas. Tune these three and the JS follows. */
+  --grid-color: #C9BCA6;
+  --grid-alpha: 0.85;
+  --grid-dot-size: 1.2;
   --color-shadow: rgba(0, 0, 0, 0.15);
   --height: 100vh;
 
