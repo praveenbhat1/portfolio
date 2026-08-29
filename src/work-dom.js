@@ -9,10 +9,8 @@ export function mountWorkSection() {
   const repeats = 2
   
   for (let r = 0; r < repeats; r++) {
-    projectsData.forEach((project, idx) => {
-      repeatedProjects.push({
-        ...project
-      })
+    projectsData.forEach((project) => {
+      repeatedProjects.push({ ...project })
     })
   }
 
@@ -23,12 +21,11 @@ export function mountWorkSection() {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
 
-  const html = shuffled.map((work, index) => {
-    const key = Math.random().toString(36).slice(2, 6) + '-' + String(index + 1).padStart(2, '0') + '/' + String(shuffled.length).padStart(2, '0')
+  const html = shuffled.map((work) => {
     return `
       <a-work class="s__scene__work s__scene__work--video js-work">
         <div class="a__inner">
-          <a href="${work.site}" target="_blank">
+          <a href="${work.site}" target="_blank" rel="noopener noreferrer" aria-label="${work.title} — open live site">
             <video
               data-src="${work.src}"
               class="a__video js-video"

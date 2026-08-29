@@ -1,9 +1,15 @@
+/**
+ * Tiny pub/sub.
+ *
+ * Backed by a Map of real arrays. The previous version used an *array* as a
+ * string-keyed map and removed handlers with `delete arr[i]`, which leaves a
+ * permanent hole rather than compacting. WorkSection subscribes/unsubscribes
+ * from 'tick' every time it crosses the viewport, so that list grew by one hole
+ * on every scroll-past and never shrank. `splice` keeps it bounded.
+ */
 class Emitter {
-  /**
-   * Constructor
-   */
-  constructor () {
-    this.events = []
+  constructor() {
+    this.events = new Map()
   }
 
   /**
@@ -14,72 +20,58 @@ class Emitter {
    * @param {Boolean} once Call handler only once
    */
   on(name, callback, context, once = false) {
-    if (!this.events[name]) {
-      this.events[name] = []
+    if (!this.events.has(name)) {
+      this.events.set(name, [])
     }
 
-    let exists = false
-    this.events[name].forEach((object) => {
-      if (object.cb === callback && object.context === context) {
-        exists = true
-        return
-      }
-    })
-    if (exists) {
-      return
-    }
+    const handlers = this.events.get(name)
+    const exists = handlers.some(
+      (object) => object.cb === callback && object.context === context
+    )
+    if (exists) return
 
-    this.events[name].push({
-      cb: callback,
-      context: context,
-      once: once
-    })
+    handlers.push({ cb: callback, context, once })
   }
 
   /**
    * Single event handler
-   * @param {String} name Event name
-   * @param {Function} callback Handler function
-   * @param {Object} context Context
    */
-  once (name, callback, context) {
+  once(name, callback, context) {
     this.on(name, callback, context, true)
   }
 
   /**
    * Emit event
-   * @param {String} name Event Name
    */
-  emit (name) {
-    const self = this
-    const data = [].slice.call(arguments, 1)
+  emit(name, ...data) {
+    const handlers = this.events.get(name)
+    if (!handlers || handlers.length === 0) return
 
-    if (this.events[name]) {
-      this.events[name].forEach((object, index) => {
-        object.cb.apply(object.context, data)
-
-        if (object.once) {
-          delete self.events[name][index]
-        }
-      })
-    }
+    // Iterate a copy so a handler that subscribes or unsubscribes during
+    // dispatch cannot corrupt the walk.
+    handlers.slice().forEach((object) => {
+      if (object.once) this.remove(name, object.cb, object.context)
+      object.cb.apply(object.context, data)
+    })
   }
 
   /**
    * Detach handler from event
-   * @param {String} name Event name
-   * @param {Function} callback Handler function
    */
-  off (name, callback, context) {
-    const self = this
+  off(name, callback, context) {
+    this.remove(name, callback, context)
+  }
 
-    if (this.events[name]) {
-      this.events[name].forEach((object, index) => {
-        if (object.cb === callback && object.context === context) {
-          delete self.events[name][index]
-        }
-      })
-    }
+  remove(name, callback, context) {
+    const handlers = this.events.get(name)
+    if (!handlers) return
+
+    const index = handlers.findIndex(
+      (object) => object.cb === callback && object.context === context
+    )
+    if (index !== -1) handlers.splice(index, 1)
+
+    if (handlers.length === 0) this.events.delete(name)
   }
 }
 

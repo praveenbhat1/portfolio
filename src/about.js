@@ -1,8 +1,19 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { prefersReducedMotion } from './utils/motion.js'
 gsap.registerPlugin(ScrollTrigger)
 
 export function initAbout() {
+  if (prefersReducedMotion()) {
+    // Still light up the timeline nodes and show the bio — just without the
+    // scrubbed spine, the drift-in cards or the staggered clip reveals.
+    document.querySelectorAll('.tl-item').forEach((item) => item.classList.add('is-on'))
+    const bio = document.querySelector('.about-bio')
+    if (bio) bio.style.opacity = '1'
+    const fill = document.querySelector('#tlSpineFill')
+    if (fill) fill.style.transform = 'scaleY(1)'
+    return
+  }
 
   // ── 1. Heading clip reveal ────────────────────────────
   gsap.from('.about-title .at-line', {

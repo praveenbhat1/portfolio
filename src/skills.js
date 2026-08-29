@@ -2,12 +2,19 @@ import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Observer } from 'gsap/Observer'
+import { prefersReducedMotion } from './utils/motion.js'
 
 gsap.registerPlugin(SplitText, ScrollTrigger, Observer)
 
 export function initSkills() {
   const section = document.querySelector('.skills')
   if (!section) return
+
+  if (prefersReducedMotion()) {
+    // Reveal the bento grid outright; skip the marquee skew warp and 3D tilt.
+    gsap.set(section.querySelectorAll('.bento-card'), { opacity: 1, y: 0 })
+    return
+  }
 
   // 1. Heading reveal
   const split = new SplitText(section.querySelectorAll('.skills-title .st-line'), {

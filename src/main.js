@@ -5,10 +5,13 @@ import { initSkills } from './skills.js'
 import { initChatbot } from './chatbot.js'
 import { initContact } from './contact.js'
 import { initPageTransitions } from './transitions.js'
+import { initNav } from './nav.js'
+import { initSpotlight } from './spotlight.js'
 import { mountWorkSection } from './work-dom.js'
 import { WorkSection } from './work-section.js'
 import Emitter from './utils/Emitter.js'
 import Ticker from './utils/Ticker.js'
+import { prefersReducedMotion } from './utils/motion.js'
 import './work-item.js'
 
 import Lenis from 'lenis'
@@ -29,28 +32,36 @@ window.addEventListener('resize', () => {
   Emitter.emit('resize', widthChanged)
 })
 
-window.lenis = new Lenis()
-window.lenis.on('scroll', ScrollTrigger.update)
-gsap.ticker.add((time) => window.lenis.raf(time * 1000))
-gsap.ticker.lagSmoothing(0)
+// Smooth scroll is itself motion — hijacking the scroll wheel is one of the
+// things prefers-reduced-motion most specifically asks us not to do. Previously
+// Lenis was initialised unconditionally while every other effect checked.
+if (!prefersReducedMotion()) {
+  window.lenis = new Lenis()
+  window.lenis.on('scroll', ScrollTrigger.update)
+  gsap.ticker.add((time) => window.lenis.raf(time * 1000))
+  gsap.ticker.lagSmoothing(0)
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   initCursor()
+  initNav()
+
   runPreloader(() => {
     initHero()
     initAbout()
-    
-    mountWorkSection()   // 1. inject cards into DOM FIRST
+
+    mountWorkSection() // inject cards into the DOM first
 
     Ticker.init()
 
     const start = () => {
       Emitter.emit('siteLoaded')
-      window.__workSection = new WorkSection()  // 2. THEN construct
+      window.__workSection = new WorkSection() // then construct
       initSkills()
       initPageTransitions()
       initChatbot()
       initContact()
+      initSpotlight()
     }
 
     if (document.readyState === 'complete') {
@@ -60,4 +71,3 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
-

@@ -1,5 +1,6 @@
 import Emitter from './utils/Emitter.js'
 import Ticker from './utils/Ticker.js'
+import { prefersReducedMotion } from './utils/motion.js'
 
 import { gsap } from 'gsap'
 import { SlowMo } from 'gsap/EasePack'
@@ -92,6 +93,13 @@ export class WorkSection {
     this.setTimeline()
     this.bindEvents()
 
+    if (prefersReducedMotion()) {
+      Ticker.nextTick(() => {
+        this.pointsProgress = 1
+        this.drawPoints()
+      }, this)
+    }
+
     if (window.lenis) {
       window.lenis.resize()
     }
@@ -135,7 +143,7 @@ export class WorkSection {
   onIntersect(e) {
     this.isPaused = !e.detail.isIntersecting
 
-    if (this.isPaused) {
+    if (this.isPaused || prefersReducedMotion()) {
       Emitter.off('tick', this.tick, this)
     } else {
       Emitter.on('tick', this.tick, this)
@@ -151,12 +159,15 @@ export class WorkSection {
    * Set canvas style
    */
   setCtxStyle() {
-    const color = getComputedStyle(this.el).getPropertyValue(
-      '--color-primary'
-    )
+    // --color-secondary, not --color-primary: primary IS this section's
+    // background, so the grid was being drawn invisibly on top of itself.
+    const color = getComputedStyle(this.el)
+      .getPropertyValue('--color-secondary')
+      .trim()
 
     Ticker.nextTick(() => {
-      this.ctx.strokeStyle = color || '#121313'
+      this.ctx.strokeStyle = color || '#B8A994'
+      this.ctx.globalAlpha = 0.5
     })
   }
 
@@ -381,13 +392,15 @@ export class WorkSection {
 
     const worksEl = works.map((work) => work.el)
 
-    let { tl } = this
-
-    if (tl) {
-      tl.kill()
+    // Tear down the previous timeline *and* its ScrollTrigger before rebuilding.
+    // tl.kill() alone leaves the ScrollTrigger alive in GSAP 3.
+    if (this.tl) {
+      if (this.tl.scrollTrigger) this.tl.scrollTrigger.kill()
+      this.tl.kill()
+      this.tl = null
     }
 
-    tl = gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: el,
         start: 'top 25%',
@@ -398,6 +411,8 @@ export class WorkSection {
         scene.style.setProperty('--state', String(this.state))
       },
     })
+
+    this.tl = tl
 
     tl.fromTo(
       mask.el,

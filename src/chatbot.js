@@ -222,20 +222,39 @@ export function initChatbot() {
   })
   messages.insertAdjacentElement('afterend', chipsRow)
 
-  toggle.addEventListener('click', () => {
-    isOpen = !isOpen
+  function setOpen(next) {
+    isOpen = next
+    toggle.setAttribute('aria-expanded', String(isOpen))
+    toggle.setAttribute('aria-label', isOpen ? 'Close chat' : 'Open chat')
+
     if (isOpen) {
       panel.classList.add('open')
+      panel.removeAttribute('inert')
       gsap.to(panel, { clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.5, ease: 'power3.out' })
       iconOpen.style.display = 'none'
       iconClose.style.display = 'block'
+      input.focus({ preventScroll: true })
     } else {
       gsap.to(panel, {
         clipPath: 'inset(0 0 100% 0)', opacity: 0, duration: 0.4, ease: 'power3.in',
-        onComplete: () => panel.classList.remove('open')
+        onComplete: () => {
+          panel.classList.remove('open')
+          panel.setAttribute('inert', '')
+        }
       })
       iconOpen.style.display = 'block'
       iconClose.style.display = 'none'
+    }
+  }
+
+  panel.setAttribute('inert', '')
+  toggle.addEventListener('click', () => setOpen(!isOpen))
+
+  // Escape closes the panel and returns focus to the launcher.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      setOpen(false)
+      toggle.focus()
     }
   })
 
@@ -284,5 +303,11 @@ export function initChatbot() {
   sendBtn.addEventListener('click', sendMessage)
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') sendMessage()
+  })
+
+  // Keep the chip row in sync with what has already been asked.
+  chipsRow.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chat-chip')
+    if (chip) chip.classList.add('is-used')
   })
 }
