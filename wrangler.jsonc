@@ -7,5 +7,13 @@
   "compatibility_date": "2026-08-29",
   "assets": {
     "directory": "./dist"
-  }
+  },
+  // Both hostnames are declared here so the desired state is complete: wrangler
+  // reconciles this list on deploy, and omitting the apex (added by hand in the
+  // dashboard) risks it being dropped. www serves the same site; the canonical
+  // tag in index.html points search engines at the apex.
+  "routes": [
+    { "pattern": "praveenbhat.dev", "custom_domain": true },
+    { "pattern": "www.praveenbhat.dev", "custom_domain": true }
+  ]
 }
