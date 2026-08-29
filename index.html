@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Praveen Bhat — Portfolio</title>
+  <meta name="description" content="Praveen Bhat — Developer portfolio. Crafting premium digital experiences through motion, code, and functional design.">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://praveenbhat.dev">
+  <meta property="og:title" content="Praveen Bhat — Portfolio">
+  <meta property="og:description" content="Praveen Bhat — Developer portfolio. Crafting premium digital experiences through motion, code, and functional design.">
+  <meta property="og:image" content="/assets/character.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://praveenbhat.dev">
+  <meta property="twitter:title" content="Praveen Bhat — Portfolio">
+  <meta property="twitter:description" content="Praveen Bhat — Developer portfolio. Crafting premium digital experiences through motion, code, and functional design.">
+  <meta property="twitter:image" content="/assets/character.png">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="theme-color" content="#121313">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/fonts/bigger-display.css">
+  <link rel="stylesheet" href="/fonts/fraktion-mono.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/work.css">
+</head>
+<body class="is-loading">
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- GRAIN TEXTURE -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- PRELOADER -->
+  <div id="preloader" class="active">
+    <div class="pre-curtain pre-curtain--top"></div>
+    <div class="pre-curtain pre-curtain--bottom"></div>
+    <div class="pre-content">
+      <div class="pre-logo">PB.</div>
+      <div class="pre-center">
+        <div class="pre-counter" id="preCounter">000</div>
+        <div class="pre-status" id="preStatus">Initialising</div>
+      </div>
+      <div class="pre-clock" id="preClock">00:00:00</div>
+      <div class="pre-progress-wrap">
+        <div class="pre-progress-bar" id="preBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE WRAPPER -->
+  <div id="site">
+
+    <section class="hero" id="hero">
+      <canvas id="heroParticles"></canvas>
+      <div class="hero-bg-blob" id="heroBgBlob" aria-hidden="true"></div>
+
+      <div class="bg-initials" aria-hidden="true">PB</div>
+
+      <nav class="nav-bar">
+        <div class="nav-logo">PB.</div>
+        <div class="nav-links">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="nav-cta">Let's talk</a>
+      </nav>
+
+      <div class="hero-content">
+        <!-- LEFT COLUMN: Text and stats -->
+        <div class="hero-left">
+          <div class="hero-tag">
+            <span class="tag-dot"></span>
+            <span>Available for work</span>
+          </div>
+          <h1 class="hero-heading">
+            <span class="line h-praveen"><span>Praveen</span></span>
+            <span class="line h-bhat"><span>Bhat |</span></span>
+            <span class="line accent h-developer"><span><span id="typewriter">Developer</span></span></span>
+            <span class="line h-portfolio"><span>Portfolio</span></span>
+          </h1>
+          <p class="hero-sub">
+            Crafting premium digital experiences through motion, 
+            code, and functional design. Built to move.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#work" class="cta-primary">Explore Work</a>
+            <a href="#contact" class="cta-ghost">Get in touch</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><span class="stat-num" data-target="12" data-suffix="+">0</span><span class="stat-lbl">Projects</span></div>
+            <div class="stat"><span class="stat-num" data-target="3" data-suffix="+">0</span><span class="stat-lbl">Years exp</span></div>
+            <div class="stat"><span class="stat-num" data-target="100" data-suffix="%">0</span><span class="stat-lbl">Passion</span></div>
+          </div>
+        </div>
+
+        <!-- CENTER COLUMN: Character -->
+        <div class="hero-center">
+          <div class="char-wrap" id="charWrap">
+            <div class="char-glow"></div>
+            <!-- Character rising wrapper -->
+            <div class="char-img-wrap">
+              <img src="/assets/character.png" alt="Praveen Bhat - Developer avatar" class="char-img">
+              <div class="char-glare" id="charGlare"></div>
+            </div>
+            
+            <div class="badge-parallax-wrap fp1">
+              <div class="float-tag ft1">React · Node.js</div>
+            </div>
+            <div class="badge-parallax-wrap fp2">
+              <div class="float-tag ft2">UI / UX Design</div>
+            </div>
+            <div class="badge-parallax-wrap fp3">
+              <div class="float-tag ft3">Open to work</div>
+            </div>
+            
+            <svg class="spark-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0l2.4 9.6L24 12l-9.6 2.4L12 24l-2.4-9.6L0 12l9.6-2.4z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Code float -->
+        <div class="hero-right">
+          <div class="code-float-wrap" id="codeFloatWrap">
+            <div class="code-float">
+              <div class="code-dot-row">
+                <span class="cd red"></span>
+                <span class="cd yellow"></span>
+                <span class="cd green"></span>
+              </div>
+              <div class="code-lines">
+                <div><span class="ck">class</span> <span class="cf">Developer</span>:</div>
+                <div>&nbsp;&nbsp;<span class="ck">def</span> <span class="cf">build</span>(self):</div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs">passion</span> = <span class="cn">∞</span></div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ck">return</span> <span class="cs">"premium"</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <span class="scroll-txt">SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+
+      <div class="about-intro">
+        <span class="about-eyebrow">The journey</span>
+        <h2 class="about-title">
+          <span class="at-line">From Udupi</span>
+          <span class="at-line ac">to the World.</span>
+        </h2>
+        <p class="about-bio">
+          AI & Data Science student, freelance product engineer,
+          and VP of IDEA Club at NMAMIT — building scalable
+          AI systems and full-stack products that move people.
+        </p>
+      </div>
+
+      <!-- WORK · EDUCATION · HIGHLIGHTS — journey timeline -->
+      <div class="tl" id="journey">
+
+        <div class="tl-legend">
+          <span class="tl-chip tl-chip--work">Work</span>
+          <span class="tl-chip tl-chip--edu">Education</span>
+          <span class="tl-chip tl-chip--hl">Highlights</span>
+        </div>
+
+        <div class="tl-track">
+          <div class="tl-spine" aria-hidden="true">
+            <div class="tl-spine-fill" id="tlSpineFill"></div>
+          </div>
+
+          <ol class="tl-list">
+
+            <li class="tl-item" data-side="left">
+              <span class="tl-node"></span>
+              <span class="tl-year">2022</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--edu">Education</span>
+                <h4 class="tl-role">NMAM Institute of Technology</h4>
+                <p class="tl-org">B.Tech · Artificial Intelligence &amp; Data Science — Nitte, Udupi</p>
+                <p class="tl-meta">2022 – 2026</p>
+                <p class="tl-note">The journey starts here.</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="right">
+              <span class="tl-node"></span>
+              <span class="tl-year">2023</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Work</span>
+                <h4 class="tl-role">AgriTech</h4>
+                <p class="tl-org">Crop-prediction ML platform for farmers</p>
+                <p class="tl-meta">Python · Random Forest · Flask</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="left">
+              <span class="tl-node"></span>
+              <span class="tl-year">2023</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Work</span>
+                <h4 class="tl-role">Resq-Connect</h4>
+                <p class="tl-org">Disaster management &amp; response portal</p>
+                <p class="tl-meta">Full-stack</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="right">
+              <span class="tl-node"></span>
+              <span class="tl-year">2024</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Work</span>
+                <h4 class="tl-role">VEC Atelier</h4>
+                <p class="tl-org">Full-stack e-commerce platform</p>
+                <p class="tl-meta">React · Node.js · MongoDB</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="left">
+              <span class="tl-node"></span>
+              <span class="tl-year">2024</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Work</span>
+                <h4 class="tl-role">RetinaAI</h4>
+                <p class="tl-org">Diabetic-retinopathy diagnostics · used by real users</p>
+                <p class="tl-meta">FastAPI · OpenCV · ML</p>
+                <p class="tl-note">Real users. Real impact.</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="right">
+              <span class="tl-node"></span>
+              <span class="tl-year">2025</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Freelance</span>
+                <h4 class="tl-role">Revora — SaaS Platform</h4>
+                <p class="tl-org">Multi-tenant review-automation ecosystem</p>
+                <p class="tl-meta">FastAPI · Celery · Redis · Twilio</p>
+                <p class="tl-note">First client. First invoice.</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="left">
+              <span class="tl-node"></span>
+              <span class="tl-year">2025</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--work">Freelance</span>
+                <h4 class="tl-role">Sri Vinayaka Temple Platform</h4>
+                <p class="tl-org">Online seva booking with PDF receipts</p>
+                <p class="tl-meta">Next.js · TypeScript · Firebase · Tailwind</p>
+              </div>
+            </li>
+
+            <li class="tl-item" data-side="right">
+              <span class="tl-node"></span>
+              <span class="tl-year">2025</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--hl">Highlight</span>
+                <h4 class="tl-role">VP · IDEA Club &amp; Incridea Prize</h4>
+                <p class="tl-org">Vice President, IDEA Club NMAMIT · 2nd Prize, Incridea 2025 · SIH &amp; SAP Hackfest</p>
+                <p class="tl-note">The work started speaking.</p>
+              </div>
+            </li>
+
+            <li class="tl-item tl-item--now" data-side="left">
+              <span class="tl-node"></span>
+              <span class="tl-year">Now</span>
+              <div class="tl-card">
+                <span class="tl-tag tl-tag--hl">Next</span>
+                <h4 class="tl-role">Open to full-time / startup</h4>
+                <p class="tl-org">AI &amp; full-stack engineer, ready to ship</p>
+                <p class="tl-note">The road is widening.</p>
+              </div>
+            </li>
+
+          </ol>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- WORK SECTION -->
+    <section id="work" class="s-work" data-intersect>
+      <div class="s__outer">
+        <div class="s__inner js-container">
+          <h2 class="s__title">
+            <span class="s__title__inner js-title">
+              <span class="s__title__letter js-letter">W</span>
+              <span class="s__title__letter js-letter">O</span>
+              <span class="s__title__letter js-letter">R</span>
+              <span class="s__title__letter js-letter">K</span>
+            </span>
+          </h2>
+
+          <div class="s__scene js-scene">
+            <!-- Rendered by work-dom.js -->
+          </div><!-- .s__scene -->
+
+          <canvas class="s__canvas js-canvas"></canvas>
+        </div><!-- .s__inner -->
+
+        <div class="s__mask-outer">
+          <div class="s__mask js-mask">
+            <svg class="s__mask__svg js-mask-svg">
+              <path class="s__mask__path-inner js-mask-path-inner" d=""></path>
+              <path class="s__mask__path-outer js-mask-path-outer" d=""></path>
+              <path class="s__mask__path-lines js-mask-path-lines" d=""></path>
+            </svg>
+          </div><!-- .s__mask -->
+        </div><!-- .s__mask-outer -->
+
+        <div class="s__ruler js-ruler"></div>
+      </div><!-- .s__outer -->
+    </section>
+
+    <section class="skills" id="skills">
+      <div class="skills-header">
+        <span class="skills-eyebrow">Tech &amp; tools</span>
+        <h2 class="skills-title">
+          <span class="st-line">What I build</span>
+          <span class="st-line accent">with.</span>
+        </h2>
+      </div>
+
+      <div class="marquee-wrap">
+        <div class="marquee-row" id="marqueeRow1">
+          <div class="marquee-track">
+            <span>React</span><span>Next.js</span><span>Node.js</span>
+            <span>FastAPI</span><span>Python</span><span>TypeScript</span>
+            <span>MongoDB</span><span>PostgreSQL</span><span>Firebase</span>
+          </div>
+          <div class="marquee-track" aria-hidden="true">
+            <span>React</span><span>Next.js</span><span>Node.js</span>
+            <span>FastAPI</span><span>Python</span><span>TypeScript</span>
+            <span>MongoDB</span><span>PostgreSQL</span><span>Firebase</span>
+          </div>
+        </div>
+        <div class="marquee-row marquee-row--reverse" id="marqueeRow2">
+          <div class="marquee-track">
+            <span>Scikit-learn</span><span>OpenCV</span><span>Redis</span>
+            <span>Celery</span><span>GSAP</span><span>Tailwind CSS</span>
+            <span>Git</span><span>Postman</span><span>JWT</span>
+          </div>
+          <div class="marquee-track" aria-hidden="true">
+            <span>Scikit-learn</span><span>OpenCV</span><span>Redis</span>
+            <span>Celery</span><span>GSAP</span><span>Tailwind CSS</span>
+            <span>Git</span><span>Postman</span><span>JWT</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-bento">
+        <div class="bento-card">
+          <i class="ti ti-code"></i>
+          <h3>Frontend</h3>
+          <p>React, Next.js, TypeScript, Tailwind CSS</p>
+        </div>
+        <div class="bento-card">
+          <i class="ti ti-server-2"></i>
+          <h3>Backend</h3>
+          <p>Node.js, Express, FastAPI, Celery, Redis</p>
+        </div>
+        <div class="bento-card">
+          <i class="ti ti-brain"></i>
+          <h3>AI / ML</h3>
+          <p>Scikit-learn, Pandas, NumPy, OpenCV</p>
+        </div>
+        <div class="bento-card">
+          <i class="ti ti-database"></i>
+          <h3>Databases</h3>
+          <p>MongoDB, PostgreSQL, Firebase</p>
+        </div>
+        <div class="bento-card">
+          <i class="ti ti-tool"></i>
+          <h3>Tools</h3>
+          <p>Git, GitHub, Postman, JWT</p>
+        </div>
+        <div class="bento-card">
+          <i class="ti ti-users"></i>
+          <h3>Leadership</h3>
+          <p>VP IDEA Club, Team Lead, Event Mgmt</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+      <div class="contact-inner">
+        <span class="contact-eyebrow">Get in touch</span>
+        <h2 class="contact-title">
+          <span class="ct-line">Let's build</span>
+          <span class="ct-line accent">something.</span>
+        </h2>
+
+        <a href="mailto:sowkurpraveenbhat@gmail.com" class="contact-email">
+          sowkurpraveenbhat@gmail.com
+        </a>
+
+        <div class="contact-socials">
+          <a href="https://linkedin.com/in/praveenbhat" target="_blank" class="social-link">
+            <i class="ti ti-brand-linkedin"></i> LinkedIn
+          </a>
+          <a href="https://github.com/praveenbhat" target="_blank" class="social-link">
+            <i class="ti ti-brand-github"></i> GitHub
+          </a>
+          <a href="tel:8431295640" class="social-link">
+            <i class="ti ti-phone"></i> Call
+          </a>
+        </div>
+
+        <div class="contact-cta-buttons">
+          <a href="mailto:sowkurpraveenbhat@gmail.com" class="contact-cta-btn">
+            ✉ Send email
+          </a>
+          <a href="https://linkedin.com/in/praveenbhat" target="_blank" class="contact-cta-btn">
+            <i class="ti ti-brand-linkedin"></i> LinkedIn
+          </a>
+          <a href="https://github.com/praveenbhat" target="_blank" class="contact-cta-btn">
+            <i class="ti ti-brand-github"></i> GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-marquee">
+        <div class="fm-track">
+          <span>AVAILABLE FOR WORK</span><span>·</span>
+          <span>OPEN TO COLLABS</span><span>·</span>
+          <span>AVAILABLE FOR WORK</span><span>·</span>
+          <span>OPEN TO COLLABS</span><span>·</span>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <span>© 2026 Sowkur Praveen Bhat</span>
+        <span>Built with GSAP & obsession</span>
+      </footer>
+    </section>
+
+  </div>
+
+  <!-- CHAT WIDGET -->
+  <div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle" id="chatToggle" aria-label="Open chat">
+      <i class="ti ti-message-circle-2" id="chatIconOpen"></i>
+      <i class="ti ti-x" id="chatIconClose" style="display:none"></i>
+    </button>
+
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-header">
+        <div class="chat-avatar">PB</div>
+        <div>
+          <div class="chat-name">Ask about Praveen</div>
+          <div class="chat-status"><span class="status-dot"></span>Online</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg chat-msg--bot">
+          Hey! I'm here to answer questions about Praveen — his
+          projects, skills, experience, education. Ask away.
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Ask me about Praveen..." />
+        <button id="chatSend" aria-label="Send">
+          <i class="ti ti-send"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
