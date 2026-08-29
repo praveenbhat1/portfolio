@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://praveenbhat.dev/sitemap.xml
