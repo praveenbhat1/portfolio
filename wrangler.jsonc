@@ -1,0 +1,11 @@
+{
+  // Static-assets-only Worker: there is no server-side code, so no "main"
+  // entrypoint — Cloudflare serves ./dist straight from its edge network.
+  // The _headers file Vite copies into dist/ is honoured by Workers Assets,
+  // so the cache and security rules still apply.
+  "name": "portfolio",
+  "compatibility_date": "2026-08-29",
+  "assets": {
+    "directory": "./dist"
+  }
+}
